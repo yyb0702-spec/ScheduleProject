@@ -89,4 +89,20 @@ public class ScheduleService {
                 schedule.getModifiedAt());
     }
 
+    public void delete(Long scheduleId, DeleteScheduleRequest request) {
+        String password = request.getPassword();
+
+        if (!request.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        boolean existance = scheduleRepository.existsById(scheduleId);
+
+        if(!existance)
+        {
+            throw new IllegalStateException("없는 유저 입니다");
+        }
+
+        scheduleRepository.deleteById(scheduleId);
+    }
 }
