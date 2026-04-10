@@ -72,7 +72,7 @@ public class ScheduleService {
         List<Schedule> schedules;
 
         if (name == null) {
-            schedules = scheduleRepository.findAllOrderByModifiedAtDesc();
+            schedules = scheduleRepository.findAllByOrderByModifiedAtDesc();
         } else {
             schedules = scheduleRepository.findByNameOrderByModifiedAtDesc(name);
         }
