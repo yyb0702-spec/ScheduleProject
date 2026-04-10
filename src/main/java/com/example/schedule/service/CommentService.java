@@ -17,11 +17,18 @@ public class CommentService {
     @Transactional
     public CreateCommentResponse save(Long scheduleId, CreateCommentRequest request) {
 
+        long count = commentRepository.countByScheduleId(scheduleId);
+
+        if(count >= 10)
+        {
+            throw new IllegalArgumentException("댓글은 최대 10개까지만 작성하실수 있습니다");
+        }
+
         Comment comment = new Comment(request.getContent(),request.getName(),request.getPassword(),scheduleId);
         Comment saveComment = commentRepository.save(comment);
 
         return new CreateCommentResponse(saveComment.getId(),
-                saveComment.getS_id(),
+                saveComment.getScheduleId(),
                 saveComment.getContent(),
                 saveComment.getName(),
                 saveComment.getCreatedAt(),

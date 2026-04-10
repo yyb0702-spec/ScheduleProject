@@ -14,21 +14,21 @@ public class Comment extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false , length = 100)
     private String content;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
-    private Long s_id;
+    private Long scheduleId;
 
-    public Comment(String content,String name,String password,Long s_id)
+    public Comment(String content,String name,String password,Long scheduleId)
     {
         this.content = content;
         this.name = name;
         this.password = password;
-        this.s_id = s_id;
+        this.scheduleId = scheduleId;
     }
 
 

@@ -1,7 +1,9 @@
 package com.example.schedule.service;
 
 import com.example.schedule.dto.*;
+import com.example.schedule.entity.Comment;
 import com.example.schedule.entity.Schedule;
+import com.example.schedule.repository.CommentRepository;
 import com.example.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request) {
@@ -37,29 +40,48 @@ public class ScheduleService {
                 () -> new IllegalStateException("없는 스케쥴 입니다")
         );
 
+        List<Comment> comments = commentRepository.findByScheduleId(scheduleId);
+        List<GetCommentResponse> dtos = new ArrayList<>();
+
+        for(Comment comment : comments)
+        {
+            GetCommentResponse dto = new GetCommentResponse(
+                    comment.getId(),
+                    comment.getContent(),
+                    comment.getName(),
+                    comment.getCreatedAt(),
+                    comment.getModifiedAt(),
+                    comment.getScheduleId()
+            );
+            dtos.add(dto);
+        }
+
+
         return new GetOneScheduleResponse(schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getName(),
                 schedule.getCreatedAt(),
-                schedule.getModifiedAt());
+                schedule.getModifiedAt(),
+                dtos);
     }
+
     @Transactional(readOnly = true)
-    public List<GetOneScheduleResponse> getAll(String name)
+    public List<GetScheduleResponse> getAll(String name)
     {
         List<Schedule> schedules;
 
         if (name == null) {
-            schedules = scheduleRepository.findAll();
+            schedules = scheduleRepository.findAllOrderByModifiedAtDesc();
         } else {
-            schedules = scheduleRepository.findByName(name);
+            schedules = scheduleRepository.findByNameOrderByModifiedAtDesc(name);
         }
 
 
-        List<GetOneScheduleResponse> dtos = new ArrayList<>();
+        List<GetScheduleResponse> dtos = new ArrayList<>();
         for(Schedule schedule : schedules)
         {
-            GetOneScheduleResponse dto = new GetOneScheduleResponse(
+            GetScheduleResponse dto = new GetScheduleResponse(
                     schedule.getId(),
                     schedule.getTitle(),
                     schedule.getContent(),
