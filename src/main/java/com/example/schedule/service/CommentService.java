@@ -17,7 +17,7 @@ public class CommentService {
     @Transactional
     public CreateCommentResponse save(Long scheduleId, CreateCommentRequest request) {
 
-        long count = commentRepository.countByScheduleId(scheduleId);
+        long count = commentRepository.countByScheduleId(scheduleId); //scheduleId 로 count를 찾는 select 쿼리 실행
 
         if(count >= 10)
         {
