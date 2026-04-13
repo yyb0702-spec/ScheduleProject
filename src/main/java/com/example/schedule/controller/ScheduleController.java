@@ -30,9 +30,9 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules")
-    public ResponseEntity<List<GetOneScheduleResponse>> getAllSchedule(String name)
+    public ResponseEntity<List<GetScheduleResponse>> getAllSchedule(@RequestParam(required=false) String name)
     {
-        List<GetOneScheduleResponse> result = scheduleService.getAll(name);
+        List<GetScheduleResponse> result = scheduleService.getAll(name);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @PutMapping("/schedules/{scheduleId}")

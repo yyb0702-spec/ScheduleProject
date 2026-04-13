@@ -3,26 +3,23 @@ package com.example.schedule.dto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
-public class GetOneScheduleResponse {
+public class CreateCommentResponse {
 
     private final Long id;
-    private final String title;
+    private final Long scheduleId;
     private final String content;
     private final String name;
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
-    private final List<GetCommentResponse> comments;
 
-    public GetOneScheduleResponse(Long id, String title, String content, String name, LocalDateTime createdAt, LocalDateTime modifiedAt, List<GetCommentResponse> comments) {
+    public CreateCommentResponse(Long id, Long scheduleId, String content, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        this.title = title;
+        this.scheduleId = scheduleId;
         this.content = content;
         this.name = name;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.comments = comments;
     }
 }
